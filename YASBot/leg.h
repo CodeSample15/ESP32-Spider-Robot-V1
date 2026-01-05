@@ -4,6 +4,7 @@
 
 class Leg {
   public:
+    Leg();
     Leg(Adafruit_PWMServoDriver* driver, uint8_t rid, uint8_t aid, uint8_t wid);
     Leg(Adafruit_PWMServoDriver* driver, uint8_t rid, uint8_t aid, uint8_t wid, limit_s rootl, limit_s arml, limit_s wristl);
 

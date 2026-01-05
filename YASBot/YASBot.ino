@@ -1,29 +1,11 @@
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
-#include "Leg.h"
+#include "Robot.h"
 
 #define SERVO_FREQ 50 // Analog servos run at ~50 Hz updates
 
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
-Leg backRight = Leg(&pwm, 0, 1, 2,
-          {212, 420},
-          {210, 585},
-          {100, 503});
-
-Leg backLeft = Leg(&pwm, 3, 4, 5,
-          {200, 420},
-          {180, 580},
-          {120, 510});
-
-Leg frontLeft = Leg(&pwm, 6, 7, 8,
-          {180, 390},
-          {190, 585},
-          {130, 530});
-
-Leg frontRight = Leg(&pwm, 9, 10, 11,
-          {200, 405},
-          {95, 500},
-          {120, 510});
+Robot spider = Robot(&pwm);
 
 void setup() {
   Serial.begin(9600);
@@ -38,13 +20,10 @@ void setup() {
 }
 
 void loop() {
-  backRight.setPositions(0, -0.2, 0.3);
-  backLeft.setPositions(0, -0.2, 0.3);
-  frontLeft.setPositions(0, -0.2, 0.3);
-  frontRight.setPositions(0, -0.2, 0.3);
-
-  backRight.tick();
-  backLeft.tick();
-  frontLeft.tick();
-  frontRight.tick();
+  spider.conf_crouch();
+  spider.tick();
+  sleep(2);
+  spider.conf_stand();
+  spider.tick();
+  sleep(2);
 }

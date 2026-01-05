@@ -1,5 +1,10 @@
 #include "Leg.h"
 
+Leg::Leg() {
+  root = Motor();
+  arm = Motor();
+  wrist = Motor();
+}
 
 Leg::Leg(Adafruit_PWMServoDriver* driver, uint8_t rid, uint8_t aid, uint8_t wid) {
   root = Motor(rid, driver);
