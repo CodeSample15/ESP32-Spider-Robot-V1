@@ -19,9 +19,10 @@ typedef struct {
 
 class Motor {
   public:
+    Motor();
     Motor(uint8_t id, Adafruit_PWMServoDriver* driver, limit_s limit={DEFAULT_MOTOR_MIN, DEFAULT_MOTOR_MAX});
     
-    void setTarget(int8_t pos);
+    void setTarget(float pos); // [-1.0] - [1.0]
     void setUsePD(bool usePD); //PD control loop
     void setSpeed(float speed);
 
@@ -34,6 +35,7 @@ class Motor {
     Adafruit_PWMServoDriver* driver;
 
     limit_s limit;
+    uint16_t lmidpoint;
 
     uint16_t target;
     uint16_t position; //position moves towards target at a specific speed each "tick()"

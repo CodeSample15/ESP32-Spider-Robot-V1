@@ -1,15 +1,32 @@
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
+#include "Leg.h"
 
 #define SERVO_FREQ 50 // Analog servos run at ~50 Hz updates
 
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
-int position = 375;
-String fromComputer;
+Leg backRight = Leg(&pwm, 0, 1, 2,
+          {212, 420},
+          {210, 585},
+          {100, 503});
+
+Leg backLeft = Leg(&pwm, 3, 4, 5,
+          {200, 420},
+          {180, 580},
+          {120, 510});
+
+Leg frontLeft = Leg(&pwm, 6, 7, 8,
+          {180, 390},
+          {190, 585},
+          {130, 530});
+
+Leg frontRight = Leg(&pwm, 9, 10, 11,
+          {200, 405},
+          {95, 500},
+          {120, 510});
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("Testing servo");
 
   pwm.begin();
 
@@ -21,20 +38,13 @@ void setup() {
 }
 
 void loop() {
-  fromComputer = Serial.readString();
+  backRight.setPositions(0, -0.2, 0.3);
+  backLeft.setPositions(0, -0.2, 0.3);
+  frontLeft.setPositions(0, -0.2, 0.3);
+  frontRight.setPositions(0, -0.2, 0.3);
 
-  // #define DEFAULT_MOTOR_MAX 625
-  // #define DEFAULT_MOTOR_MIN 125
-  if(fromComputer != "") {
-    if(fromComputer[0] == 'u')
-      position++;
-    else if(fromComputer[0] == 'd')
-      position--;
-    else
-      position = fromComputer.toInt();
-
-    Serial.println((String)position);
-  }
-  
-  pwm.setPWM(11, 0, position);
+  backRight.tick();
+  backLeft.tick();
+  frontLeft.tick();
+  frontRight.tick();
 }
