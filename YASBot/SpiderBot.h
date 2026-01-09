@@ -2,9 +2,9 @@
 
 #include "Leg.h"
 
-class Robot {
+class SpiderBot {
   public:
-    Robot(Adafruit_PWMServoDriver* driver);
+    SpiderBot(Adafruit_PWMServoDriver* driver);
 
     //move all legs to the same position
     void allLegs(float root, float arm, float wrist);

@@ -7,9 +7,12 @@
 #define DEFAULT_MOTOR_MAX 625
 #define DEFAULT_MOTOR_MIN 125
 
+//this value was guessed and then slowly adjusted to represent roughly how fast an SG90 moves (in pulse length / clock cycle) ¯\_(ツ)_/¯
+#define MOTOR_MAX_SPEED 0.6
+
 //tuning values for PD loop
 #define kP 1
-#define kD 0
+#define kI 0
 
 // struct to define the upper and lower limit of a servo motor for consistent range of motion between limbs of the robot
 typedef struct {
@@ -23,12 +26,13 @@ class Motor {
     Motor(uint8_t id, Adafruit_PWMServoDriver* driver, limit_s limit={DEFAULT_MOTOR_MIN, DEFAULT_MOTOR_MAX});
     
     void setTarget(float pos); // [-1.0] - [1.0]
-    void setUsePD(bool usePD); //PD control loop
+    void setUsePI(bool usePI); //PI control loop
     void setSpeed(float speed);
 
     void tick();
 
     bool targetReached(); //returns whether or not the motor has reached its desired target
+    uint16_t getPosition();
 
   private:
     uint8_t id;
@@ -38,8 +42,8 @@ class Motor {
     uint16_t lmidpoint;
 
     uint16_t target;
-    uint16_t position; //position moves towards target at a specific speed each "tick()"
+    float position; //position moves towards target at a specific speed each "tick()"
 
     float speed;
-    bool usePD;
+    bool usePI;
 };

@@ -1,10 +1,10 @@
-#include "Robot.h"
+#include "SpiderBot.h"
 
-Robot::Robot(Adafruit_PWMServoDriver* driver) {
+SpiderBot::SpiderBot(Adafruit_PWMServoDriver* driver) {
   backRight = Leg(driver, 0, 1, 2,
           {212, 420},
           {210, 580},
-          {100, 503});
+          {120, 503}); //was 100
 
   backLeft = Leg(driver, 3, 4, 5,
           {200, 420},
@@ -14,7 +14,7 @@ Robot::Robot(Adafruit_PWMServoDriver* driver) {
   frontLeft = Leg(driver, 6, 7, 8,
           {180, 390},
           {190, 580},
-          {130, 530});
+          {150, 530}); //was 130
 
   frontRight = Leg(driver, 9, 10, 11,
           {200, 405},
@@ -23,7 +23,7 @@ Robot::Robot(Adafruit_PWMServoDriver* driver) {
 }
 
 //move all legs to the same position
-void Robot::allLegs(float root, float arm, float wrist) {
+void SpiderBot::allLegs(float root, float arm, float wrist) {
   backRight.setPositions(root, arm, wrist);
   backLeft.setPositions(root, arm, wrist);
   frontLeft.setPositions(root, arm, wrist);
@@ -31,33 +31,33 @@ void Robot::allLegs(float root, float arm, float wrist) {
 }
 
 //simple configurations
-void Robot::conf_stand() {
+void SpiderBot::conf_stand() {
   allLegs(0, -0.2, 0.3);
 }
 
-void Robot::conf_crouch() {
+void SpiderBot::conf_crouch() {
   allLegs(0, 1, -1);
 }
 
-void Robot::tick() {
+void SpiderBot::tick() {
   backRight.tick();
   backLeft.tick();
   frontLeft.tick();
   frontRight.tick();
 }
 
-Leg* Robot::getBackRight() {
+Leg* SpiderBot::getBackRight() {
   return &backRight;
 }
 
-Leg* Robot::getBackLeft() {
+Leg* SpiderBot::getBackLeft() {
   return &backLeft;
 }
 
-Leg* Robot::getFrontLeft() {
+Leg* SpiderBot::getFrontLeft() {
   return &frontLeft;
 }
 
-Leg* Robot::getFrontRight() {
+Leg* SpiderBot::getFrontRight() {
   return &frontRight;
 }
