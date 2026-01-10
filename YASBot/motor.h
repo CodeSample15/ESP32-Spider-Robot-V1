@@ -11,8 +11,12 @@
 #define MOTOR_MAX_SPEED 0.6
 
 //tuning values for PD loop
-#define kP 1
-#define kI 0
+#define kP 0.005
+#define kI 0.001
+
+//min error size where integral kicks in
+#define INTEGRAL_RANGE 50
+#define MAX_INTEGRAL 10
 
 // struct to define the upper and lower limit of a servo motor for consistent range of motion between limbs of the robot
 typedef struct {
@@ -43,6 +47,8 @@ class Motor {
 
     uint16_t target;
     float position; //position moves towards target at a specific speed each "tick()"
+
+    float integral;
 
     float speed;
     bool usePI;

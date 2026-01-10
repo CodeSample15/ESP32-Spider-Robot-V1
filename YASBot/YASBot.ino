@@ -1,10 +1,11 @@
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
-#include "Robot.h"
+#include "SpiderBot.h"
 
 #define SERVO_FREQ 50 // Analog servos run at ~50 Hz updates
 
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
+SpiderBot robot = SpiderBot(&pwm);
 Motor test = Motor(2, &pwm, {120, 503});
 
 void setup() {
@@ -18,7 +19,12 @@ void setup() {
 
   delay(10);
 
-  test.setUsePI(false);
+  robot.conf_crouch();
+  robot.tick();
+
+  delay(500);
+
+  test.setUsePI(true);
   test.setSpeed(0.5);
 }
 

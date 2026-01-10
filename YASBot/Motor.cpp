@@ -6,6 +6,7 @@ Motor::Motor() {
   limit = {DEFAULT_MOTOR_MIN, DEFAULT_MOTOR_MAX};
   usePI = false;
   speed = 1;
+  integral = 0;
 }
 
 Motor::Motor(uint8_t id, Adafruit_PWMServoDriver* driver, limit_s limit) {
@@ -18,6 +19,8 @@ Motor::Motor(uint8_t id, Adafruit_PWMServoDriver* driver, limit_s limit) {
   
   lmidpoint = (limit.upper + limit.lower) / 2;
   target = lmidpoint; //initialize target to midpoint to avoid breaking stuff
+
+  integral = 0;
 }
 
 void Motor::setTarget(float pos) {
@@ -38,25 +41,30 @@ void Motor::setSpeed(float speed) {
 
 void Motor::tick() {
   if(speed==1)
-    position = target; //use max speed if speed is 1
+    position = target; //use max servo speed if speed is 1
   else {
+    float change;
+
     if(usePI) 
     {
-      
-    } 
-    else 
-    {
-      float change = MOTOR_MAX_SPEED * speed * (target-position>0 ? 1 : -1);
+      float err = (float)target - position;
 
-      if(abs(position-target) < change)
-        position = target;
-      else
-        position += MOTOR_MAX_SPEED * speed * (target-position>0 ? 1 : -1);
+      integral = abs(err) > INTEGRAL_RANGE ? 
+              0 : constrain(integral + err, -MAX_INTEGRAL, MAX_INTEGRAL);
+
+      change = err * kP + (integral * kI);
+    } 
+    else {
+      change = MOTOR_MAX_SPEED * speed * (target-position>0 ? 1 : -1);
     }
+
+    if(abs(position-target) < change)
+      position = target;
+    else
+      position += change;
   }
 
-
-
+  //send calculated position to PWM driver via I2C
   this->driver->setPWM(id, 0, (uint16_t)position);
 }
 
