@@ -1,12 +1,15 @@
 #include "Motor.h"
 
 Motor::Motor() {
+  //bunch-o-defaults
   id = -1;
   driver = NULL;
   limit = {DEFAULT_MOTOR_MIN, DEFAULT_MOTOR_MAX};
   usePI = false;
+  useSlew = false;
   speed = 1;
   integral = 0;
+  slew = 0;
 }
 
 Motor::Motor(uint8_t id, Adafruit_PWMServoDriver* driver, limit_s limit) {
@@ -15,22 +18,30 @@ Motor::Motor(uint8_t id, Adafruit_PWMServoDriver* driver, limit_s limit) {
   this->limit = limit;
 
   usePI = false;
+  useSlew = false;
   speed = 1;
   
   lmidpoint = (limit.upper + limit.lower) / 2;
   target = lmidpoint; //initialize target to midpoint to avoid breaking stuff
 
   integral = 0;
+  slew = 0;
 }
 
 void Motor::setTarget(float pos) {
   pos = constrain(pos, -1.0, 1.0);
 
+  integral = 0;
+  slew = 0;
   target = (pos * (lmidpoint - limit.lower)) + lmidpoint;
 }
 
 void Motor::setUsePI(bool usePI) {
   this->usePI = usePI;
+}
+
+void Motor::setUseSlew(bool useSlew) {
+  this->useSlew = useSlew;
 }
 
 void Motor::setSpeed(float speed) {
@@ -53,9 +64,14 @@ void Motor::tick() {
               0 : constrain(integral + err, -MAX_INTEGRAL, MAX_INTEGRAL);
 
       change = err * kP + (integral * kI);
-    } 
+    }
     else {
       change = MOTOR_MAX_SPEED * speed * (target-position>0 ? 1 : -1);
+    }
+
+    if(useSlew) {
+      change = min(change, slew);
+      slew += SLEW_RATE * (target-position>0 ? 1 : -1);
     }
 
     if(abs(position-target) < change)

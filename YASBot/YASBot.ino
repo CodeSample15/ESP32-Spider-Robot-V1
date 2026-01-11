@@ -1,4 +1,3 @@
-#include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
 #include "SpiderBot.h"
 
@@ -25,6 +24,7 @@ void setup() {
   delay(500);
 
   test.setUsePI(true);
+  test.setUseSlew(true);
   test.setSpeed(0.5);
 }
 

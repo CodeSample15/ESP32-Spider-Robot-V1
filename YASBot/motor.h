@@ -18,6 +18,9 @@
 #define INTEGRAL_RANGE 50
 #define MAX_INTEGRAL 10
 
+//slew
+#define SLEW_RATE 0.0001
+
 // struct to define the upper and lower limit of a servo motor for consistent range of motion between limbs of the robot
 typedef struct {
   uint16_t lower;
@@ -31,6 +34,7 @@ class Motor {
     
     void setTarget(float pos); // [-1.0] - [1.0]
     void setUsePI(bool usePI); //PI control loop
+    void setUseSlew(bool useSlew);
     void setSpeed(float speed);
 
     void tick();
@@ -49,7 +53,9 @@ class Motor {
     float position; //position moves towards target at a specific speed each "tick()"
 
     float integral;
+    float slew;
 
     float speed;
     bool usePI;
+    bool useSlew;
 };
