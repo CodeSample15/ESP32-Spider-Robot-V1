@@ -70,7 +70,7 @@ void Motor::tick() {
     }
 
     if(useSlew) {
-      change = min(change, slew);
+      change = abs(slew) < abs(change) ? slew : change;
       slew += SLEW_RATE * (target-position>0 ? 1 : -1);
     }
 
@@ -82,6 +82,11 @@ void Motor::tick() {
 
   //send calculated position to PWM driver via I2C
   this->driver->setPWM(id, 0, (uint16_t)position);
+}
+
+void Motor::finishMoving() {
+  while(!targetReached())
+    tick();
 }
 
 bool Motor::targetReached() {

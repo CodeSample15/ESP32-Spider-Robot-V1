@@ -24,20 +24,12 @@ void setup() {
   delay(500);
 
   test.setUsePI(true);
-  test.setUseSlew(true);
   test.setSpeed(0.5);
 }
 
 void loop() {
   test.setTarget(0.5);
-
-  while(!test.targetReached()) {
-    test.tick();
-  }
-
+  test.finishMoving();
   test.setTarget(-0.5);
-
-  while(!test.targetReached()) {
-    test.tick();
-  }
+  test.finishMoving();
 }

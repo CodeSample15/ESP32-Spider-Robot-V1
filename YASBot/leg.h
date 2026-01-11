@@ -11,6 +11,9 @@ class Leg {
     void setPositions(float rootp, float armp, float wristp);
 
     void tick();
+    void finishMoving(); //wait until all motors have reached their target positions
+
+    bool targetsReached();
 
     Motor* getRoot();
     Motor* getArm();

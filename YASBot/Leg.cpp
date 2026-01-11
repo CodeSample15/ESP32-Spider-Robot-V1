@@ -30,6 +30,15 @@ void Leg::tick() {
   wrist.tick();
 }
 
+void Leg::finishMoving() {
+  while(!targetsReached())
+    tick(); //just keep ticking until all motors have reached their destination
+}
+
+bool Leg::targetsReached() {
+  return root.targetReached() && arm.targetReached() && wrist.targetReached();
+}
+
 Motor* Leg::getRoot() {
   return &root;
 }
