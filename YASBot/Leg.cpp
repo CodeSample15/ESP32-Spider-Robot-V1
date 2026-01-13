@@ -24,6 +24,24 @@ void Leg::setPositions(float rootp, float armp, float wristp) {
   wrist.setTarget(wristp);
 }
 
+void Leg::setUsePIs(bool rootu, bool armu, bool wristu) {
+  root.setUsePI(rootu);
+  arm.setUsePI(armu);
+  wrist.setUsePI(wrist);
+}
+
+void Leg::setUseSlews(bool rootu, bool armu, bool wristu) {
+  root.setUseSlew(rootu);
+  arm.setUseSlew(armu);
+  wrist.setUseSlew(wrist);
+}
+
+void Leg::setSpeeds(float roots, float arms, float wrists) {
+  root.setSpeed(roots);
+  arm.setSpeed(arms);
+  wrist.setSpeed(wrists);
+}
+
 void Leg::tick() {
   root.tick();
   arm.tick();

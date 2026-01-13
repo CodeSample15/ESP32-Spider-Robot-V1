@@ -5,7 +5,6 @@
 
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 SpiderBot robot = SpiderBot(&pwm);
-Motor test = Motor(2, &pwm, {120, 503});
 
 void setup() {
   Serial.begin(9600);
@@ -22,14 +21,8 @@ void setup() {
   robot.tick();
 
   delay(500);
-
-  test.setUsePI(true);
-  test.setSpeed(0.5);
 }
 
 void loop() {
-  test.setTarget(0.5);
-  test.finishMoving();
-  test.setTarget(-0.5);
-  test.finishMoving();
+  
 }

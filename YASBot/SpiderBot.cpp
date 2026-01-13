@@ -46,6 +46,15 @@ void SpiderBot::tick() {
   frontRight.tick();
 }
 
+void SpiderBot::finishMoving() {
+  while(!targetsReached())
+    tick();
+}
+
+bool SpiderBot::targetsReached() {
+  return backRight.targetsReached() && backLeft.targetsReached() && frontLeft.targetsReached() && frontRight.targetsReached();
+}
+
 Leg* SpiderBot::getBackRight() {
   return &backRight;
 }

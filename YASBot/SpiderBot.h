@@ -14,6 +14,9 @@ class SpiderBot {
     void conf_crouch();
 
     void tick();
+    void finishMoving(); //wait until all legs have moved to their target locations
+
+    bool targetsReached();
 
     Leg* getBackRight();
     Leg* getBackLeft();
