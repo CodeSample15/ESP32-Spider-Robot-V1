@@ -12,10 +12,12 @@ Motor::Motor() {
   slew = 0;
 }
 
-Motor::Motor(uint8_t id, Adafruit_PWMServoDriver* driver, limit_s limit) {
+Motor::Motor(uint8_t id, Adafruit_PWMServoDriver* driver, bool reversed, limit_s limit) {
   this->id = id;
   this->driver = driver;
   this->limit = limit;
+
+  this->reversed = reversed;
 
   usePI = false;
   useSlew = false;
@@ -30,6 +32,9 @@ Motor::Motor(uint8_t id, Adafruit_PWMServoDriver* driver, limit_s limit) {
 
 void Motor::setTarget(float pos) {
   pos = constrain(pos, -1.0, 1.0);
+
+  if(reversed)
+    pos*=-1;
 
   integral = 0;
   slew = 0;
@@ -51,6 +56,9 @@ void Motor::setSpeed(float speed) {
 }
 
 void Motor::tick() {
+  if(target == position)
+    return;
+
   if(speed==1)
     position = target; //use max servo speed if speed is 1
   else {
@@ -74,7 +82,7 @@ void Motor::tick() {
       slew += SLEW_RATE * (target-position>0 ? 1 : -1);
     }
 
-    if(abs(position-target) < change)
+    if(abs(position-target) < change) //if the change will cause the position to overshoot, just set the position to the target
       position = target;
     else
       position += change;

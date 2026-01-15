@@ -1,22 +1,22 @@
 #include "SpiderBot.h"
 
 SpiderBot::SpiderBot(Adafruit_PWMServoDriver* driver) {
-  backRight = Leg(driver, 0, 1, 2,
+  backRight = Leg(driver, 0, 1, 2, true,
           {212, 420},
           {210, 580},
           {120, 503}); //was 100
 
-  backLeft = Leg(driver, 3, 4, 5,
+  backLeft = Leg(driver, 3, 4, 5, false,
           {200, 420},
           {180, 580},
           {120, 510});
 
-  frontLeft = Leg(driver, 6, 7, 8,
+  frontLeft = Leg(driver, 6, 7, 8, true,
           {180, 390},
           {190, 580},
           {150, 530}); //was 130
 
-  frontRight = Leg(driver, 9, 10, 11,
+  frontRight = Leg(driver, 9, 10, 11, false,
           {200, 405},
           {95, 500},
           {120, 510});

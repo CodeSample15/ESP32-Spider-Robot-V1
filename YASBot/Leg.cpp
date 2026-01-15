@@ -6,16 +6,16 @@ Leg::Leg() {
   wrist = Motor();
 }
 
-Leg::Leg(Adafruit_PWMServoDriver* driver, uint8_t rid, uint8_t aid, uint8_t wid) {
-  root = Motor(rid, driver);
-  arm = Motor(aid, driver);
-  wrist = Motor(wid, driver);
+Leg::Leg(Adafruit_PWMServoDriver* driver, uint8_t rid, uint8_t aid, uint8_t wid, bool root_reversed) {
+  root = Motor(rid, driver, root_reversed);
+  arm = Motor(aid, driver, false);
+  wrist = Motor(wid, driver, false);
 }
 
-Leg::Leg(Adafruit_PWMServoDriver* driver, uint8_t rid, uint8_t aid, uint8_t wid, limit_s rootl, limit_s arml, limit_s wristl) {
-  root = Motor(rid, driver, rootl);
-  arm = Motor(aid, driver, arml);
-  wrist = Motor(wid, driver, wristl);
+Leg::Leg(Adafruit_PWMServoDriver* driver, uint8_t rid, uint8_t aid, uint8_t wid, bool root_reversed, limit_s rootl, limit_s arml, limit_s wristl) {
+  root = Motor(rid, driver, root_reversed, rootl);
+  arm = Motor(aid, driver, false, arml);
+  wrist = Motor(wid, driver, false, wristl);
 }
 
 void Leg::setPositions(float rootp, float armp, float wristp) {
@@ -27,13 +27,13 @@ void Leg::setPositions(float rootp, float armp, float wristp) {
 void Leg::setUsePIs(bool rootu, bool armu, bool wristu) {
   root.setUsePI(rootu);
   arm.setUsePI(armu);
-  wrist.setUsePI(wrist);
+  wrist.setUsePI(wristu);
 }
 
 void Leg::setUseSlews(bool rootu, bool armu, bool wristu) {
   root.setUseSlew(rootu);
   arm.setUseSlew(armu);
-  wrist.setUseSlew(wrist);
+  wrist.setUseSlew(wristu);
 }
 
 void Leg::setSpeeds(float roots, float arms, float wrists) {
@@ -55,6 +55,15 @@ void Leg::finishMoving() {
 
 bool Leg::targetsReached() {
   return root.targetReached() && arm.targetReached() && wrist.targetReached();
+}
+
+void Leg::simple_walk_cycle(float anim) {
+  float anims = sin(anim); //constrain anim progress between -1 and 1
+  float animc = cos(anim);
+
+  root.setTarget(-0.5 + (anims * 0.4));
+  arm.setTarget(0.3 + (animc * 0.4));
+  wrist.setTarget(-0.1);
 }
 
 Motor* Leg::getRoot() {

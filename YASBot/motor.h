@@ -30,7 +30,7 @@ typedef struct {
 class Motor {
   public:
     Motor();
-    Motor(uint8_t id, Adafruit_PWMServoDriver* driver, limit_s limit={DEFAULT_MOTOR_MIN, DEFAULT_MOTOR_MAX});
+    Motor(uint8_t id, Adafruit_PWMServoDriver* driver, bool reversed=false, limit_s limit={DEFAULT_MOTOR_MIN, DEFAULT_MOTOR_MAX});
     
     void setTarget(float pos); // [-1.0] - [1.0]
     void setUsePI(bool usePI); //PI control loop
@@ -46,6 +46,8 @@ class Motor {
   private:
     uint8_t id;
     Adafruit_PWMServoDriver* driver;
+
+    bool reversed;
 
     limit_s limit;
     uint16_t lmidpoint;

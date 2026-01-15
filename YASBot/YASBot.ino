@@ -2,9 +2,12 @@
 #include "SpiderBot.h"
 
 #define SERVO_FREQ 50 // Analog servos run at ~50 Hz updates
+#define PI 3.14
 
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 SpiderBot robot = SpiderBot(&pwm);
+
+float animation = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -21,8 +24,20 @@ void setup() {
   robot.tick();
 
   delay(500);
+
+  robot.getFrontRight()->setSpeeds(0.8, 0.8, 0.8);
+  robot.getFrontLeft()->setSpeeds(0.8, 0.8, 0.8);
+  robot.getBackRight()->setSpeeds(0.8, 0.8, 0.8);
+  robot.getBackLeft()->setSpeeds(0.8, 0.8, 0.8);
 }
 
 void loop() {
-  
+  robot.getFrontRight()->simple_walk_cycle(animation);
+  robot.getFrontLeft()->simple_walk_cycle(animation + PI);
+  robot.getBackRight()->simple_walk_cycle(-animation - PI);
+  robot.getBackLeft()->simple_walk_cycle(-animation);
+
+  robot.finishMoving();
+
+  animation += 0.05;
 }

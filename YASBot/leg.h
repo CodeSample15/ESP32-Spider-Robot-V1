@@ -5,8 +5,8 @@
 class Leg {
   public:
     Leg();
-    Leg(Adafruit_PWMServoDriver* driver, uint8_t rid, uint8_t aid, uint8_t wid);
-    Leg(Adafruit_PWMServoDriver* driver, uint8_t rid, uint8_t aid, uint8_t wid, limit_s rootl, limit_s arml, limit_s wristl);
+    Leg(Adafruit_PWMServoDriver* driver, uint8_t rid, uint8_t aid, uint8_t wid, bool root_reversed);
+    Leg(Adafruit_PWMServoDriver* driver, uint8_t rid, uint8_t aid, uint8_t wid, bool root_reversed, limit_s rootl, limit_s arml, limit_s wristl);
 
     void setPositions(float rootp, float armp, float wristp);
     void setUsePIs(bool rootu, bool armu, bool wristu);
@@ -19,7 +19,7 @@ class Leg {
     bool targetsReached();
 
     //basic animations and movements
-    void walk_cycle(float anim); //walk cycle with anim controlling what part of the cycle to move to
+    void simple_walk_cycle(float anim); //walk cycle with anim controlling what part of the cycle to move to
 
     Motor* getRoot();
     Motor* getArm();
