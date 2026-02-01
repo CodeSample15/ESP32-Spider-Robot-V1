@@ -22,6 +22,27 @@ SpiderBot::SpiderBot(Adafruit_PWMServoDriver* driver) {
           {120, 510});
 }
 
+void SpiderBot::setUsePIs(bool rootu, bool armu, bool wristu) {
+  backRight.setUsePIs(rootu, armu, wristu);
+  backLeft.setUsePIs(rootu, armu, wristu);
+  frontLeft.setUsePIs(rootu, armu, wristu);
+  frontRight.setUsePIs(rootu, armu, wristu);
+}
+
+void SpiderBot::setUseSlews(bool rootu, bool armu, bool wristu) {
+  backRight.setUseSlews(rootu, armu, wristu);
+  backLeft.setUseSlews(rootu, armu, wristu);
+  frontLeft.setUseSlews(rootu, armu, wristu);
+  frontRight.setUseSlews(rootu, armu, wristu);
+}
+
+void SpiderBot::setSpeeds(float roots, float arms, float wrists) {
+  backRight.setSpeeds(roots, arms, wrists);
+  backLeft.setSpeeds(roots, arms, wrists);
+  frontLeft.setSpeeds(roots, arms, wrists);
+  frontRight.setSpeeds(roots, arms, wrists);
+}
+
 //move all legs to the same position
 void SpiderBot::allLegs(float root, float arm, float wrist) {
   backRight.setPositions(root, arm, wrist);

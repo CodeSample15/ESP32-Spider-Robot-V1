@@ -25,10 +25,7 @@ void setup() {
 
   delay(500);
 
-  robot.getFrontRight()->setSpeeds(0.8, 0.8, 0.8);
-  robot.getFrontLeft()->setSpeeds(0.8, 0.8, 0.8);
-  robot.getBackRight()->setSpeeds(0.8, 0.8, 0.8);
-  robot.getBackLeft()->setSpeeds(0.8, 0.8, 0.8);
+  robot.setSpeeds(0.8, 0.8, 0.8);
 }
 
 void loop() {

@@ -6,6 +6,11 @@ class SpiderBot {
   public:
     SpiderBot(Adafruit_PWMServoDriver* driver);
 
+    //settings (sets values for all legs)
+    void setUsePIs(bool rootu, bool armu, bool wristu);
+    void setUseSlews(bool rootu, bool armu, bool wristu);
+    void setSpeeds(float roots, float arms, float wrists);
+
     //move all legs to the same position
     void allLegs(float root, float arm, float wrist);
 
