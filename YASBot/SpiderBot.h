@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Leg.h"
+#include "leg.h"
 
 class SpiderBot {
   public:

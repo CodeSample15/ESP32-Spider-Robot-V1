@@ -1,4 +1,4 @@
-#include "Motor.h"
+#include "motor.h"
 
 Motor::Motor() {
   //bunch-o-defaults

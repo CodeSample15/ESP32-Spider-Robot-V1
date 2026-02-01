@@ -1,4 +1,4 @@
-#include "Leg.h"
+#include "leg.h"
 
 Leg::Leg() {
   root = Motor();

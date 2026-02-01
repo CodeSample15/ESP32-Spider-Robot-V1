@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Motor.h"
+#include "motor.h"
 
 class Leg {
   public:
