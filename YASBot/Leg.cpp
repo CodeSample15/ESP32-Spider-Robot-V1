@@ -24,6 +24,10 @@ void Leg::setPositions(float rootp, float armp, float wristp) {
   wrist.setTarget(wristp);
 }
 
+void Leg::setConfig(LEG_CONFIG conf) {
+  setPositions(conf.root, conf.arm, conf.wrist);
+}
+
 void Leg::setUsePIs(bool rootu, bool armu, bool wristu) {
   root.setUsePI(rootu);
   arm.setUsePI(armu);
